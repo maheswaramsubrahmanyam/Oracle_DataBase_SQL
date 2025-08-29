@@ -116,12 +116,7 @@ TRUNCATE TABLE EMPLOYEE_DATE;
 
  These are the basic **DDL commands with examples**.
 
-```
-Perfect 👍 Let’s extend your notes into a **README.md** file for **DML (Data Manipulation Language)** with clear **theory + syntax + examples** in Markdown.
 
-Here’s the formatted version:
-
-````markdown
 # Oracle SQL - DML (Data Manipulation Language)
 
 ## What is DML?
