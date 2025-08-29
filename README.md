@@ -2,7 +2,7 @@
 
 Here’s your content converted into **Markdown (`README.md`) format** so you can directly use it for storing notes in your GitHub repo:
 
-````markdown
+
 # Oracle SQL - DDL (Data Definition Language)
 
 ## DDL Commands
