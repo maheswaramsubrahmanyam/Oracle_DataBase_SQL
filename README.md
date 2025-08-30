@@ -255,3 +255,248 @@ SELECT * FROM EMPLOYEE_DATE;
 
 ---
 
+SQL (**Structured Query Language**) is used to manage and manipulate relational databases.
+It provides commands categorized into different groups:
+
+* **DDL** – Data Definition Language (CREATE, ALTER, DROP, TRUNCATE)
+* **DML** – Data Manipulation Language (INSERT, UPDATE, DELETE, SELECT)
+* **TCL** – Transaction Control Language (COMMIT, ROLLBACK, SAVEPOINT)
+* **DCL** – Data Control Language (GRANT, REVOKE)
+* **Operators** – Arithmetic, Comparison, Logical, Special
+
+---
+
+## Creating Table
+
+```sql
+CREATE TABLE employee (
+    emp_id NUMBER,
+    emp_name VARCHAR(240),
+    emp_sal NUMBER(8,2),
+    emp_role VARCHAR(250)
+);
+```
+
+ Explanation:
+
+* `emp_id` → Employee ID (Number type)
+* `emp_name` → Employee Name (Text)
+* `emp_sal` → Employee Salary (up to 8 digits, 2 decimals)
+* `emp_role` → Employee Role
+
+---
+
+##  Inserting Data
+
+```sql
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (1, 'Ravi Kumar', 50000, 'Software Engineer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (2, 'Priya Sharma', 60000, 'Senior Developer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (3, 'Amit Verma', 45000, 'UI Designer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (4, 'Sneha Reddy', 70000, 'Team Lead');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (5, 'Vikas Singh', 40000, 'Tester');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (6, 'Anjali Gupta', 80000, 'Project Manager');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (7, 'Rahul Mehta', 55000, 'Data Analyst');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (8, 'Neha Patel', 47000, 'HR Executive');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (9, 'Arjun Nair', 75000, 'DevOps Engineer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (10, 'Kavya Iyer', 52000, 'Business Analyst');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (11, 'Manish Kumar', 48000, 'Support Engineer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (12, 'Pooja Rani', 65000, 'Database Administrator');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (13, 'Sanjay Das', 42000, 'Software Engineer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (14, 'Divya Sharma', 90000, 'Product Manager');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (15, 'Nikhil Jain', 46000, 'QA Engineer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (16, 'Shreya Rao', 70000, 'Tech Lead');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (17, 'Abhishek Singh', 38000, 'Intern');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (18, 'Meena Kumari', 72000, 'System Architect');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (19, 'Kiran Kumar', 51000, 'Software Developer');
+INSERT INTO employee (emp_id, emp_name, emp_sal, emp_role) VALUES (20, 'Lakshmi Menon', 58000, 'HR Manager');
+
+```
+
+Inserted 20 records into the `employee` table.
+
+---
+
+## DML Commands
+
+### SELECT – Retrieve data
+
+```sql
+SELECT * FROM employee;
+```
+
+### INSERT – Add new record
+
+```sql
+INSERT INTO employee(emp_id, emp_name, emp_sal, emp_role)
+VALUES (21, 'Maheswaram', 750000, 'Backend Developer');
+```
+
+### UPDATE – Modify data
+
+```sql
+UPDATE employee SET emp_sal = emp_sal + 5000 WHERE emp_id = 1;
+```
+
+### DELETE – Remove data
+
+```sql
+DELETE FROM employee WHERE emp_id = 5;
+```
+
+---
+
+##  TCL Commands
+
+### COMMIT – Save changes permanently
+
+```sql
+COMMIT;
+```
+
+### ROLLBACK – Undo uncommitted changes
+
+```sql
+ROLLBACK;
+```
+
+### SAVEPOINT – Create a checkpoint in transaction
+
+```sql
+SAVEPOINT sp1;
+ROLLBACK TO sp1;
+```
+
+---
+
+##  DCL Commands
+
+### GRANT – Give permission
+
+```sql
+GRANT INSERT, UPDATE ON employee TO Anuradha;
+```
+
+### REVOKE – Remove permission
+
+```sql
+REVOKE INSERT, UPDATE ON employee FROM Anuradha;
+```
+
+---
+
+##  Operators in Oracle SQL
+
+### Arithmetic Operators
+
+* `+` (Addition)
+* `-` (Subtraction)
+* `*` (Multiplication)
+* `/` (Division)
+
+Example:
+
+```sql
+SELECT emp_id, emp_name, emp_sal + 1000 AS BonusSalary
+FROM employee WHERE emp_id = 14;
+```
+
+---
+
+###  Comparison Operators
+
+* `=` Equals
+* `!=` or `<>` Not Equal
+* `>` Greater than
+* `<` Less than
+* `>=` Greater than or Equal
+* `<=` Less than or Equal
+
+Example:
+
+```sql
+SELECT * FROM employee WHERE emp_role = 'HR Manager';
+SELECT * FROM employee WHERE emp_role <> 'Data Analyst';
+```
+
+---
+
+###  Logical Operators
+
+* **AND** → Both conditions must be true
+* **OR** → Any condition true
+* **NOT** → Negates condition
+
+Example:
+
+```sql
+SELECT * FROM employee 
+WHERE emp_sal >= 550000 AND emp_role = 'Backend Developer';
+```
+
+---
+
+###  Special Operators
+
+####  BETWEEN
+
+```sql
+SELECT * FROM employee WHERE emp_sal BETWEEN 30000 AND 40000;
+```
+
+####  IN
+
+```sql
+SELECT * FROM employee 
+WHERE emp_role IN ('Team Lead', 'Backend Developer', 'Support Engineer');
+```
+
+####  LIKE (Pattern Matching)
+
+* `%` → Any number of characters
+* `_` → Exactly one character
+
+```sql
+SELECT * FROM employee WHERE emp_name LIKE 'A%';   -- starts with A  
+SELECT * FROM employee WHERE emp_name LIKE '%ar%'; -- contains 'ar'  
+```
+
+#### IS NULL
+
+```sql
+SELECT * FROM employee WHERE emp_sal IS NULL;
+```
+
+---
+
+##  Practical Queries
+
+ Employees with salary greater than `75000`
+
+```sql
+SELECT * FROM employee WHERE emp_sal > 75000;
+```
+
+ Employees except Backend Developer
+
+```sql
+SELECT * FROM employee WHERE NOT emp_role = 'Backend Developer';
+```
+
+ Double the salary of emp\_id = 20
+
+```sql
+SELECT emp_id, emp_name, emp_sal * 2 AS double_salary 
+FROM employee WHERE emp_id = 20;
+```
+
+---
+
+##  Summary
+
+* **DDL** → Defines structure of tables
+* **DML** → Works with data (Insert, Update, Delete, Select)
+* **TCL** → Manages transactions (Commit, Rollback, Savepoint)
+* **DCL** → Manages permissions (Grant, Revoke)
+* **Operators** → Used in conditions and calculations
+
+---
