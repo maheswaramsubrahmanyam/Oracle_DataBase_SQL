@@ -482,7 +482,7 @@ SELECT * FROM employee WHERE emp_sal > 75000;
 SELECT * FROM employee WHERE NOT emp_role = 'Backend Developer';
 ```
 
- Double the salary of emp\_id = 20
+ Double the salary of emp_id = 20
 
 ```sql
 SELECT emp_id, emp_name, emp_sal * 2 AS double_salary 
@@ -500,3 +500,263 @@ FROM employee WHERE emp_id = 20;
 * **Operators** → Used in conditions and calculations
 
 ---
+
+# SQL Functions in SQL\*Plus
+
+Functions in SQL are **predefined operations** that can be performed on data. They help in data manipulation, transformation, and analysis.
+
+SQL functions are mainly categorized into two types:
+
+1. **Scalar Functions (Single Row Functions):**
+
+   * Operate on a single row and return a single result for each row.
+2. **Aggregate Functions (Multiple Row Functions):**
+
+   * Operate on a group of rows and return a single summarized result.
+
+---
+
+##  Scalar Functions (Single Row Functions)
+
+### 1. String Functions
+
+#### **UPPER()**
+
+Converts lowercase letters to uppercase.
+
+```sql
+SELECT UPPER(EMP_NAME)
+FROM EMPLOYEE;
+```
+
+**Explanation:** If `EMP_NAME = 'anuradha'`, the result will be `ANURADHA`.
+
+---
+
+#### **LOWER()**
+
+Converts uppercase letters to lowercase.
+
+```sql
+SELECT LOWER(EMP_ROLE)
+FROM EMPLOYEE;
+```
+
+**Explanation:** If `EMP_ROLE = 'MANAGER'`, the result will be `manager`.
+
+---
+
+#### **INITCAP()**
+
+Capitalizes the first letter of each word.
+
+```sql
+SELECT INITCAP('anuradha') AS formatted_name
+FROM dual;
+
+SELECT INITCAP(EMP_NAME)
+FROM employee;
+```
+
+**Explanation:** `'anuradha'` becomes `'Anuradha'`.
+
+---
+
+#### **SUBSTR()**
+
+Extracts a substring from the main string.
+
+**Syntax:**
+
+```sql
+SUBSTR(string, starting_position, length)
+```
+
+```sql
+SELECT SUBSTR('PADAMATA ANURADHA', 1, 8) AS SUR_NAME,
+       SUBSTR('PADAMATA ANURADHA', 9, 17) AS FIRST_NAME
+FROM dual;
+```
+
+**Output:**
+
+* SUR\_NAME = `PADAMATA`
+* FIRST\_NAME = `ANURADHA`
+
+---
+
+#### **LENGTH()**
+
+Counts the number of characters in a string.
+
+```sql
+SELECT LENGTH(EMP_NAME) AS EMPLOYEE_NAME_LENGTH
+FROM EMPLOYEE;
+```
+
+**Explanation:** If `EMP_NAME = 'RAHUL'`, the result will be `5`.
+
+---
+
+#### **INSTR()**
+
+Finds the position of a substring within a string.
+
+**Syntax:**
+
+```sql
+INSTR(string, substring)
+```
+
+```sql
+SELECT INSTR('ORACLE DATA BASE', 'maheswaram')
+FROM dual;
+```
+
+**Explanation:** Returns `0` if the substring is not found.
+
+---
+
+### 2. Number Functions
+
+#### **ROUND()**
+
+Rounds a number to the specified decimal places.
+
+```sql
+SELECT ROUND(637.98632767, 3)
+FROM dual;
+```
+
+**Output:** `637.986`
+
+---
+
+#### **MOD()**
+
+Returns the remainder of a division.
+
+```sql
+SELECT MOD(678, 81)
+FROM dual;
+```
+
+**Output:** `30`
+
+---
+
+### 3. Date Functions
+
+#### **SYSDATE**
+
+Returns the current system date and time.
+
+```sql
+SELECT SYSDATE
+FROM dual;
+```
+
+---
+
+#### **ADD\_MONTHS()**
+
+Adds a number of months to a date.
+
+```sql
+SELECT ADD_MONTHS(SYSDATE, 2)
+FROM dual;
+```
+
+**Explanation:** Returns today’s date plus 2 months.
+
+---
+
+#### **NEXT\_DAY()**
+
+Finds the next occurrence of a specified day after the given date.
+
+```sql
+SELECT NEXT_DAY(SYSDATE, 'MONDAY')
+FROM dual;
+```
+
+**Explanation:** Returns the date of the next Monday after today.
+
+---
+
+#### **MONTHS\_BETWEEN()**
+
+Finds the number of months between two dates.
+
+```sql
+SELECT MONTHS_BETWEEN(SYSDATE, DATE '2026-12-12')
+FROM dual;
+```
+
+**Explanation:** Returns the difference in months between the current date and December 12, 2026.
+
+---
+
+##  Aggregate Functions (Multiple Row Functions)
+
+### **COUNT()**
+
+Counts the number of rows in a table.
+
+```sql
+SELECT COUNT(*)
+FROM EMPLOYEE;
+```
+
+---
+
+### **MAX()**
+
+Finds the maximum value in a column.
+
+```sql
+SELECT MAX(EMP_SAL) AS HIGHEST_SALARY
+FROM EMPLOYEE;
+```
+
+---
+
+### **MIN()**
+
+Finds the minimum value in a column.
+
+```sql
+SELECT MIN(EMP_SAL) AS LOWEST_SALARY
+FROM EMPLOYEE;
+```
+
+---
+
+### **SUM()**
+
+Calculates the total sum of values in a column.
+
+```sql
+SELECT SUM(EMP_SAL) AS TOTAL_SALARY_OF_ALL_EMPLOYEES
+FROM EMPLOYEE;
+```
+
+---
+
+### **AVG()**
+
+Calculates the average value of a column.
+
+```sql
+SELECT AVG(EMP_SAL) AS AVERAGE_SALARY
+FROM EMPLOYEE;
+```
+
+---
+
+## Summary
+
+* **Scalar functions** work on each row and return individual results (e.g., `UPPER()`, `ROUND()`, `SYSDATE`).
+* **Aggregate functions** work on multiple rows and return one summarized result (e.g., `MAX()`, `AVG()`, `SUM()`).
+* These functions make SQL queries more powerful by allowing **data formatting, calculation, and aggregation**.
+
