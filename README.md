@@ -760,3 +760,233 @@ FROM EMPLOYEE;
 * **Aggregate functions** work on multiple rows and return one summarized result (e.g., `MAX()`, `AVG()`, `SUM()`).
 * These functions make SQL queries more powerful by allowing **data formatting, calculation, and aggregation**.
 
+
+# Constraints in SQL
+
+Constraints in SQL are rules applied to table columns to ensure **accuracy, reliability, and integrity** of the data stored in the database. They restrict the type of data that can be stored and maintain relationships between tables.
+
+---
+
+## Types of Constraints
+
+1. **Column-level constraints** → Applied only to a single column.
+2. **Table-level constraints** → Applied to multiple columns in a table.
+
+---
+
+## Domain Constraints
+
+Domain constraints restrict the values that can be stored in a column. These include:
+
+* **NOT NULL** → Ensures a column cannot have a `NULL` value.
+* **CHECK** → Ensures that all values in a column satisfy a condition.
+* **DEFAULT** → Provides a default value if no value is specified.
+
+### Syntax
+
+```sql
+CREATE TABLE table_name (
+    column_name data_type CONSTRAINT_NAME CONSTRAINT_TYPE,
+    ...
+);
+```
+
+### Example
+
+```sql
+CREATE TABLE STUDENT (
+    roll_no NUMBER NOT NULL,
+    std_name VARCHAR(240) NOT NULL,
+    age NUMBER CHECK (age >=18),
+    gender CHAR(1) DEFAULT 'M'
+);
+SELECT * FROM STUDENT;
+
+INSERT INTO STUDENT(ROLL_NO, STD_NAME, AGE, GENDER)
+VALUES(101, 'ARHA', 19,'F');
+
+INSERT INTO STUDENT(ROLL_NO, STD_NAME, AGE, GENDER)
+VALUES(102, 'SUHA', 20,'F');
+
+INSERT INTO STUDENT(ROLL_NO, STD_NAME, AGE, GENDER)
+VALUES(104, 'MAHESWARAM', 20,'M');
+```
+
+ **Explanation**:
+
+* `NOT NULL` ensures roll\_no and std\_name cannot be empty.
+* `CHECK (age >= 18)` ensures student must be at least 18 years old.
+* `DEFAULT 'M'` sets gender to **M** if no value is provided.
+
+---
+
+## CHECK Constraint
+
+The **CHECK constraint** ensures that values inserted into a column meet a specific condition.
+
+### Syntax
+
+```sql
+column_name data_type CHECK (condition)
+```
+
+### Example
+
+```sql
+CREATE TABLE EMP_DETAILS(
+    EMP_ID NUMBER PRIMARY KEY,
+    EMP_SAL NUMBER CHECK (EMP_SAL > 0)
+);
+SELECT * FROM EMP_DETAILS;
+
+INSERT INTO EMP_DETAILS VALUES(101, 5000); -- VALID
+INSERT INTO EMP_DETAILS VALUES(101, -5000); -- ERROR
+```
+
+ **Explanation**:
+
+* `EMP_SAL` must always be greater than 0.
+* Inserting negative salary will throw an error.
+
+---
+
+## Entity Constraints
+
+Entity constraints ensure **uniqueness** and **identification** of rows.
+
+* **PRIMARY KEY** → Combination of `UNIQUE` + `NOT NULL`. It uniquely identifies each record in a table.
+* **UNIQUE** → Prevents duplicate values but allows one `NULL` value.
+
+### Syntax
+
+```sql
+CREATE TABLE table_name (
+    column_name data_type PRIMARY KEY,
+    column_name data_type UNIQUE
+);
+```
+
+### Example
+
+```sql
+CREATE TABLE department(
+    dep_id NUMBER PRIMARY KEY,
+    dep_name VARCHAR(100) UNIQUE
+);
+
+INSERT INTO department VALUES(1,'DEV');
+INSERT INTO department VALUES(2,'DEV'); -- Error: Duplicate value not allowed
+```
+
+ **Explanation**:
+
+* `dep_id` is a primary key, so it must be unique and not null.
+* `dep_name` is unique, so duplicate values are not allowed.
+
+---
+
+## Referential Constraints (Foreign Key)
+
+The **FOREIGN KEY** constraint maintains relationships between tables. It ensures that a value in one table exists in another.
+
+### Syntax
+
+```sql
+CONSTRAINT constraint_name FOREIGN KEY (column_name)
+REFERENCES parent_table(parent_column)
+```
+
+### Example
+
+```sql
+CREATE TABLE ZOMATOCUSTOMER(
+    CUST_ID NUMBER PRIMARY KEY,
+    CUST_NAME VARCHAR(50) NOT NULL ,
+    PHONE VARCHAR(15) UNIQUE,
+    EMIAL VARCHAR(100) UNIQUE ,
+    ADDRESS VARCHAR(500) NOT NULL
+);
+INSERT INTO ZOMATOCUSTOMER VALUES(1,'ANURADHA','7569399294','EXAMPLE@GMAIL.COM','MTM');
+SELECT * FROM ZOMATOCUSTOMER;
+
+CREATE TABLE ZOMATO_DELIVERY_BOY(
+    DELIVERY_ID NUMBER PRIMARY KEY,
+    DELIVERY_NAME VARCHAR(200) NOT NULL,
+    PHONE VARCHAR(15) UNIQUE,
+    CUST_ID NUMBER,
+
+    CONSTRAINT FK_CUSTOMER FOREIGN KEY (CUST_ID) REFERENCES ZOMATOCUSTOMER(CUST_ID)
+);
+
+INSERT INTO ZOMATO_DELIVERY_BOY VALUES(104, 'VINAY','893283291',1);
+SELECT * FROM ZOMATO_DELIVERY_BOY;
+```
+
+ **Explanation**:
+
+* `ZOMATOCUSTOMER` is the parent table.
+* `ZOMATO_DELIVERY_BOY` references the `CUST_ID` from parent table.
+* If we try to insert a delivery boy with a customer ID that does not exist, it will throw an error.
+
+---
+
+## Deferrable Constraints
+
+Deferrable constraints allow **postponing the checking of constraints** until the end of the transaction (`COMMIT`).
+
+* **NOT DEFERRABLE** (default): Constraint is checked immediately.
+* **DEFERRABLE**: Constraint can be deferred and checked later.
+* **INITIALLY IMMEDIATE**: Constraint is checked immediately unless deferred.
+* **INITIALLY DEFERRED**: Constraint is checked only at commit.
+
+### Syntax
+
+```sql
+CONSTRAINT constraint_name FOREIGN KEY (column_name)
+REFERENCES parent_table(parent_column)
+DEFERRABLE INITIALLY DEFERRED;
+```
+
+### Example
+
+```sql
+CREATE TABLE CUSTOMER_SWIGGY(
+    CUST_ID NUMBER PRIMARY KEY,
+    CUST_NAME VARCHAR(200)
+);
+
+SELECT * FROM CUSTOMER_SWIGGY;
+
+CREATE TABLE ORDER_SWIGGY (
+    ORDER_ID NUMBER PRIMARY KEY,
+    CUST_ID NUMBER,
+
+    CONSTRAINT FK_CUSTOMER FOREIGN KEY (CUST_ID) REFERENCES CUSTOMER_SWIGGY(CUST_ID)
+);
+
+SELECT * FROM ORDER_SWIGGY;
+```
+
+ **Explanation**:
+
+* `ORDER_SWIGGY` table references `CUSTOMER_SWIGGY`.
+* By default, the foreign key is **NOT DEFERRABLE**, so the check is immediate.
+* If declared **DEFERRABLE INITIALLY DEFERRED**, we could insert data temporarily violating the constraint and fix it before committing.
+
+---
+
+# Summary of Constraints
+
+| Constraint      | Description                                                          |
+| --------------- | -------------------------------------------------------------------- |
+| **NOT NULL**    | Prevents NULL values in a column.                                    |
+| **CHECK**       | Ensures values satisfy a specific condition.                         |
+| **DEFAULT**     | Assigns a default value when none is provided.                       |
+| **PRIMARY KEY** | Uniquely identifies a row (combination of NOT NULL + UNIQUE).        |
+| **UNIQUE**      | Ensures all values in a column are different (allows one NULL).      |
+| **FOREIGN KEY** | Ensures referential integrity between tables.                        |
+| **DEFERRABLE**  | Postpones constraint checking until COMMIT (if defined as deferred). |
+
+---
+
+
