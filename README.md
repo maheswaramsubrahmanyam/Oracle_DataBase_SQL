@@ -990,3 +990,322 @@ SELECT * FROM ORDER_SWIGGY;
 ---
 
 
+# SQL Practice – Department, Employee, Joins, Synonym, Sequence, and Views
+
+This project demonstrates the use of **Oracle SQL features** like:
+
+* Creating and dropping tables
+* Using **Primary keys** and **Foreign keys**
+* Working with **Synonyms, Sequences, and Views**
+* Performing **Joins** (Inner, Self, Outer)
+* Exploring **Set operators** with sample `employee_2024` and `employee_2025` tables
+
+---
+
+##  Table Creation and Setup
+
+### Department Table
+
+```sql
+DROP TABLE DEPARTMENT;
+CREATE TABLE department (
+    dept_id NUMBER PRIMARY KEY,
+    dept_name VARCHAR2(50)
+);
+select * from department;
+```
+
+### Employee Table
+
+```sql
+DROP TABLE employee;
+CREATE TABLE employee (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    salary NUMBER,
+    dept_id NUMBER,
+    manager_id NUMBER,
+    CONSTRAINT fk_dept FOREIGN KEY (dept_id) REFERENCES department(dept_id)
+);
+SELECT * FROM EMPLOYEE;
+```
+
+### Employee\_2024 & Employee\_2025 Tables
+
+For set operator demonstrations:
+
+```sql
+CREATE TABLE employee_2024 (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50)
+);
+
+CREATE TABLE employee_2025 (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50)
+);
+```
+
+---
+
+##  Inserting Sample Data
+
+### Department Data
+
+```sql
+INSERT INTO department VALUES (10, 'HR');
+INSERT INTO department VALUES (20, 'IT');
+INSERT INTO department VALUES (30, 'Finance');
+INSERT INTO department VALUES (40, 'Marketing');
+```
+
+**Output:**
+
+| DEPT\_ID | DEPT\_NAME |
+| -------- | ---------- |
+| 10       | HR         |
+| 20       | IT         |
+| 30       | Finance    |
+| 40       | Marketing  |
+
+---
+
+### Employee Data
+
+```sql
+INSERT INTO employee VALUES (101, 'Ravi', 50000, 10, NULL);   -- Manager HR
+INSERT INTO employee VALUES (102, 'Kiran', 45000, 10, 101);
+INSERT INTO employee VALUES (103, 'Anjali', 60000, 20, NULL); -- Manager IT
+INSERT INTO employee VALUES (104, 'Pavan', 40000, 20, 103);
+INSERT INTO employee VALUES (105, 'Sita', 70000, 30, NULL);   -- Manager Finance
+INSERT INTO employee VALUES (106, 'Krishna', 38000, 30, 105);
+INSERT INTO employee VALUES (107, 'Deepak', 30000, NULL, NULL); -- No dept (to test outer join)
+```
+
+**Output:**
+
+| EMP\_ID | EMP\_NAME | SALARY | DEPT\_ID | MANAGER\_ID |
+| ------- | --------- | ------ | -------- | ----------- |
+| 101     | Ravi      | 50000  | 10       | NULL        |
+| 102     | Kiran     | 45000  | 10       | 101         |
+| 103     | Anjali    | 60000  | 20       | NULL        |
+| 104     | Pavan     | 40000  | 20       | 103         |
+| 105     | Sita      | 70000  | 30       | NULL        |
+| 106     | Krishna   | 38000  | 30       | 105         |
+| 107     | Deepak    | 30000  | NULL     | NULL        |
+
+---
+
+### Employee\_2024 Data
+
+```sql
+INSERT INTO employee_2024 VALUES (201, 'Ravi');
+INSERT INTO employee_2024 VALUES (202, 'Kiran');
+INSERT INTO employee_2024 VALUES (203, 'Sita');
+```
+
+### Employee\_2025 Data
+
+```sql
+INSERT INTO employee_2025 VALUES (301, 'Ravi');
+INSERT INTO employee_2025 VALUES (302, 'Anjali');
+INSERT INTO employee_2025 VALUES (303, 'Deepak');
+```
+
+---
+
+##  Module 3 – Advanced SQL Features
+
+###  Synonym
+
+* A **Synonym** is an alias (another name) for a database object like a table, view, or sequence.
+* Helps in **shortening long names** and **hiding schema details**.
+
+```sql
+CREATE SYNONYM emp FOR employee;
+
+SELECT * FROM EMPLOYEE;
+SELECT * FROM EMP;
+```
+
+Both queries return the same results.
+
+---
+
+###  Sequence
+
+* A **Sequence** generates unique numbers (commonly used for primary keys).
+* Prevents duplicate key errors.
+
+```sql
+CREATE SEQUENCE EMP_SEQ START WITH 1000 INCREMENT BY 1;
+
+INSERT INTO employee_2024 VALUES (EMP_SEQ.NEXTVAL,'MOHAN');
+INSERT INTO employee_2024 VALUES (EMP_SEQ.NEXTVAL,'Arya');
+INSERT INTO employee_2024 VALUES (EMP_SEQ.NEXTVAL,'Arun');
+INSERT INTO employee_2024 VALUES (EMP_SEQ.NEXTVAL,'Geetha');
+```
+
+**Output Example (auto IDs generated):**
+
+| EMP\_ID | EMP\_NAME |
+| ------- | --------- |
+| 201     | Ravi      |
+| 202     | Kiran     |
+| 203     | Sita      |
+| 1000    | MOHAN     |
+| 1001    | Arya      |
+| 1002    | Arun      |
+| 1003    | Geetha    |
+
+---
+
+###  Views
+
+* A **View** is a **virtual table** based on the result of a query.
+* Provides **data security** by restricting access.
+
+```sql
+CREATE VIEW EMP_VIEW AS 
+SELECT emp_id , emp_name, dept_id
+FROM employee
+WHERE salary > 40000;
+
+SELECT * FROM EMP_VIEW;
+```
+
+**Output:**
+
+| EMP\_ID | EMP\_NAME | DEPT\_ID |
+| ------- | --------- | -------- |
+| 101     | Ravi      | 10       |
+| 102     | Kiran     | 10       |
+| 103     | Anjali    | 20       |
+| 105     | Sita      | 30       |
+
+---
+
+##  Joins
+
+###  Inner Join (Simple Join)
+
+```sql
+SELECT e.emp_id , e.emp_name, d.dept_name 
+FROM employee e 
+INNER JOIN department d 
+ON e.dept_id = d.dept_id;
+```
+
+**Output:**
+
+| EMP\_ID | EMP\_NAME | DEPT\_NAME |
+| ------- | --------- | ---------- |
+| 101     | Ravi      | HR         |
+| 102     | Kiran     | HR         |
+| 103     | Anjali    | IT         |
+| 104     | Pavan     | IT         |
+| 105     | Sita      | Finance    |
+| 106     | Krishna   | Finance    |
+
+---
+
+### Self Join
+
+```sql
+SELECT E1.EMP_NAME AS EMPLOYEE, E2.EMP_NAME AS MANAGER  
+FROM EMPLOYEE E1 
+JOIN EMPLOYEE E2 
+ON E1.MANAGER_ID = E2.EMP_ID;
+```
+
+**Output:**
+
+| EMPLOYEE | MANAGER |
+| -------- | ------- |
+| Kiran    | Ravi    |
+| Pavan    | Anjali  |
+| Krishna  | Sita    |
+
+---
+
+###  Left Outer Join
+
+```sql
+SELECT E.EMP_NAME ,D.DEPT_NAME 
+FROM EMPLOYEE E 
+LEFT OUTER JOIN DEPARTMENT D 
+ON E.DEPT_ID = D.DEPT_ID;
+```
+
+**Output:**
+
+| EMP\_NAME | DEPT\_NAME |
+| --------- | ---------- |
+| Ravi      | HR         |
+| Kiran     | HR         |
+| Anjali    | IT         |
+| Pavan     | IT         |
+| Sita      | Finance    |
+| Krishna   | Finance    |
+| Deepak    | NULL       |
+
+---
+
+### Right Outer Join
+
+```sql
+SELECT E.EMP_NAME ,D.DEPT_NAME 
+FROM EMPLOYEE E 
+RIGHT OUTER JOIN DEPARTMENT D 
+ON E.DEPT_ID = D.DEPT_ID;
+```
+
+**Output:**
+
+| EMP\_NAME | DEPT\_NAME |
+| --------- | ---------- |
+| Ravi      | HR         |
+| Kiran     | HR         |
+| Anjali    | IT         |
+| Pavan     | IT         |
+| Sita      | Finance    |
+| Krishna   | Finance    |
+| NULL      | Marketing  |
+
+---
+
+###  Full Outer Join
+
+```sql
+SELECT E.EMP_NAME , D.DEPT_NAME 
+FROM EMPLOYEE E 
+FULL OUTER JOIN DEPARTMENT D 
+ON E.DEPT_ID = D.DEPT_ID;
+```
+
+**Output:**
+
+| EMP\_NAME | DEPT\_NAME |
+| --------- | ---------- |
+| Ravi      | HR         |
+| Kiran     | HR         |
+| Anjali    | IT         |
+| Pavan     | IT         |
+| Sita      | Finance    |
+| Krishna   | Finance    |
+| Deepak    | NULL       |
+| NULL      | Marketing  |
+
+---
+
+##  Key Takeaways
+
+* **Synonym** → Alias for database objects.
+* **Sequence** → Auto-generates unique numbers.
+* **View** → Virtual table for simplifying queries and restricting access.
+* **Joins** → Combine data across tables:
+
+  * **Inner Join** → Matching rows only
+  * **Self Join** → Hierarchical relationships
+  * **Left/Right Outer Join** → Include non-matching rows from one side
+  * **Full Outer Join** → Includes all rows
