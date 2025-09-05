@@ -1309,3 +1309,4 @@ ON E.DEPT_ID = D.DEPT_ID;
   * **Self Join** → Hierarchical relationships
   * **Left/Right Outer Join** → Include non-matching rows from one side
   * **Full Outer Join** → Includes all rows
+-
