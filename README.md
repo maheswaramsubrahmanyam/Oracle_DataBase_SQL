@@ -1309,4 +1309,218 @@ ON E.DEPT_ID = D.DEPT_ID;
   * **Self Join** → Hierarchical relationships
   * **Left/Right Outer Join** → Include non-matching rows from one side
   * **Full Outer Join** → Includes all rows
--
+ 
+  ---
+
+# **SQL Subqueries – Complete Notes**
+
+## **What is a Subquery?**
+
+* A **subquery** (also called a **nested query** or **inner query**) is a query **inside another query**.
+* The **subquery executes first**, and the result is passed to the **outer query**.
+* Subqueries are always enclosed in **parentheses `( )`**.
+* Used for **filtering, comparisons, calculations, and temporary results**.
+
+---
+
+## **General Syntax**
+
+```sql
+SELECT column_list
+FROM table_name
+WHERE column_name operator (SELECT column_name FROM table_name WHERE condition);
+```
+
+---
+
+## **Types of Subqueries**
+
+1. **Single Row Subquery**
+2. **Multi Row Subquery**
+3. **Multi Column Subquery**
+4. **Correlated Subquery**
+5. **Nested Subquery**
+
+---
+
+## **1. Single Row Subquery**
+
+* Returns **only one row**.
+* Used with operators: `=, >, <, >=, <=, <>`.
+
+### Example
+
+```sql
+-- Find employees whose salary is greater than Ravi's salary
+SELECT emp_name, salary
+FROM employee
+WHERE salary > (SELECT salary FROM employee WHERE emp_name = 'Ravi');
+```
+
+### Execution:
+
+* Inner query → Gets Ravi’s salary (e.g., 50000).
+* Outer query → Finds all employees with salary > 50000.
+
+### Sample Output:
+
+| emp\_name | salary |
+| --------- | ------ |
+| Anjali    | 60000  |
+| Sita      | 70000  |
+
+---
+
+## **2. Multi Row Subquery**
+
+* Returns **multiple rows**.
+* Uses operators: `IN`, `ANY`, `ALL`.
+
+### Example
+
+```sql
+-- Find employees who work in the same dept as Kiran or Anjali
+SELECT emp_name, dept_id
+FROM employee
+WHERE dept_id IN (SELECT dept_id FROM employee WHERE emp_name IN ('Kiran','Anjali'));
+```
+
+### Execution:
+
+* Inner query → gets dept\_id of Kiran (10) and Anjali (20).
+* Outer query → selects all employees in dept 10 or 20.
+
+### Sample Output:
+
+| emp\_name | dept\_id |
+| --------- | -------- |
+| Ravi      | 10       |
+| Kiran     | 10       |
+| Anjali    | 20       |
+| Pavan     | 20       |
+
+---
+
+## **3. Multi Column Subquery**
+
+* Returns **multiple columns**.
+* Used for comparing **two or more values at once**.
+
+ Note: Must use tuple comparison `(col1, col2)` in Oracle.
+
+### Example
+
+```sql
+-- Find employees with the same dept and salary as Pavan
+SELECT emp_name, dept_id, salary
+FROM employee
+WHERE (dept_id, salary) IN (SELECT dept_id, salary FROM employee WHERE emp_name = 'Pavan');
+```
+
+### Execution:
+
+* Inner query → Gets (20, 40000) for Pavan.
+* Outer query → Finds employees with dept\_id=20 and salary=40000.
+
+### Sample Output:
+
+| emp\_name | dept\_id | salary |
+| --------- | -------- | ------ |
+| Pavan     | 20       | 40000  |
+
+---
+
+## **4. Correlated Subquery**
+
+* Inner query depends on the **outer query row**.
+* Executed **once for each row** of outer query.
+
+### Example
+
+```sql
+-- Find employees whose salary is greater than avg salary of their own dept
+SELECT emp_name, dept_id, salary
+FROM employee e
+WHERE salary > (SELECT AVG(salary) FROM employee WHERE dept_id = e.dept_id);
+```
+
+### Execution:
+
+* For each employee, inner query calculates average salary of that employee’s department.
+* Then compares the employee’s salary with dept average.
+
+### Sample Output:
+
+| emp\_name | dept\_id | salary |
+| --------- | -------- | ------ |
+| Ravi      | 10       | 50000  |
+| Anjali    | 20       | 60000  |
+| Sita      | 30       | 70000  |
+
+---
+
+## **5. Nested Subquery**
+
+* A subquery inside **another subquery**.
+
+### Example
+
+```sql
+-- Find employees who earn more than the min salary in IT dept
+SELECT emp_name, dept_id, salary
+FROM employee
+WHERE salary > (SELECT MIN(salary)
+                FROM employee
+                WHERE dept_id = (SELECT dept_id FROM department WHERE dept_name = 'IT'));
+```
+
+### Execution:
+
+1. Innermost → Gets dept\_id of IT (20).
+2. Middle → Finds MIN(salary) of dept 20 (e.g., 40000).
+3. Outer → Finds employees with salary > 40000.
+
+### Sample Output:
+
+| emp\_name | dept\_id | salary |
+| --------- | -------- | ------ |
+| Anjali    | 20       | 60000  |
+| Ravi      | 10       | 50000  |
+| Sita      | 30       | 70000  |
+
+---
+
+## **Subquery in SELECT Clause**
+
+```sql
+SELECT emp_name,
+       salary,
+       (SELECT dept_name FROM department d WHERE d.dept_id = e.dept_id) AS dept_name
+FROM employee e;
+```
+
+ Adds department name directly in the result.
+
+---
+
+## **Subquery in FROM Clause (Inline View)**
+
+```sql
+SELECT dept_id, AVG(salary) AS avg_salary
+FROM (SELECT * FROM employee WHERE salary > 30000)
+GROUP BY dept_id;
+```
+
+ Treats subquery as a **temporary table**.
+
+---
+
+## **Key Points**
+
+* Subquery executes first, outer query uses its result.
+* Single-row subqueries → use comparison operators.
+* Multi-row subqueries → use `IN`, `ANY`, `ALL`.
+* Correlated subqueries → run row-by-row.
+* Nested subqueries → multi-level filtering.
+
+---
