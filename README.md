@@ -1524,3 +1524,219 @@ GROUP BY dept_id;
 * Nested subqueries → multi-level filtering.
 
 ---
+
+
+# **SQL Set Operators**
+
+## **1. Introduction**
+
+* **Set operators** are used to **combine results of two or more SELECT queries**.
+* Both queries must have:
+
+  * Same **number of columns**
+  * Same **data types**
+  * Same **order of columns**
+
+---
+
+## **2. Types of Set Operators**
+
+1. **UNION** – combines results, removes duplicates
+2. **UNION ALL** – combines results, keeps duplicates
+3. **INTERSECT** – returns only common rows
+4. **MINUS** – returns rows from first query that are not in second
+
+---
+
+## **3. Syntax**
+
+```sql
+SELECT column_list FROM table1
+<SET_OPERATOR>
+SELECT column_list FROM table2;
+```
+
+---
+
+# **Step 1: Create Dedicated Tables**
+
+```sql
+-- Table 1: Employees in 2024
+CREATE TABLE employee_2024 (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    dept VARCHAR2(30)
+);
+
+-- Table 2: Employees in 2025
+CREATE TABLE employee_2025 (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    dept VARCHAR2(30)
+);
+```
+
+---
+
+# **Step 2: Insert Large Sample Data**
+
+```sql
+-- Employee 2024 Data
+INSERT INTO employee_2024 VALUES (201, 'Ravi', 'HR');
+INSERT INTO employee_2024 VALUES (202, 'Kiran', 'IT');
+INSERT INTO employee_2024 VALUES (203, 'Sita', 'Finance');
+INSERT INTO employee_2024 VALUES (204, 'Anjali', 'IT');
+INSERT INTO employee_2024 VALUES (205, 'Deepak', 'Marketing');
+INSERT INTO employee_2024 VALUES (206, 'Krishna', 'Finance');
+INSERT INTO employee_2024 VALUES (207, 'Pavan', 'IT');
+INSERT INTO employee_2024 VALUES (208, 'Mohan', 'HR');
+
+-- Employee 2025 Data
+INSERT INTO employee_2025 VALUES (301, 'Ravi', 'HR');
+INSERT INTO employee_2025 VALUES (302, 'Anjali', 'IT');
+INSERT INTO employee_2025 VALUES (303, 'Deepak', 'Marketing');
+INSERT INTO employee_2025 VALUES (304, 'Surya', 'Finance');
+INSERT INTO employee_2025 VALUES (305, 'Kiran', 'IT');
+INSERT INTO employee_2025 VALUES (306, 'Sita', 'Finance');
+INSERT INTO employee_2025 VALUES (307, 'Rajesh', 'HR');
+INSERT INTO employee_2025 VALUES (308, 'Meena', 'IT');
+```
+
+---
+
+# **Step 3: Demonstrating Set Operators**
+
+---
+
+## **1. UNION**
+
+* Combines rows from both queries.
+* Removes duplicates.
+
+```sql
+SELECT emp_name, dept FROM employee_2024
+UNION
+SELECT emp_name, dept FROM employee_2025;
+```
+
+### Sample Output
+
+| emp\_name | dept      |
+| --------- | --------- |
+| Ravi      | HR        |
+| Kiran     | IT        |
+| Sita      | Finance   |
+| Anjali    | IT        |
+| Deepak    | Marketing |
+| Krishna   | Finance   |
+| Pavan     | IT        |
+| Mohan     | HR        |
+| Surya     | Finance   |
+| Rajesh    | HR        |
+| Meena     | IT        |
+
+ Duplicates removed (e.g., Ravi, Anjali, Sita).
+
+---
+
+## **2. UNION ALL**
+
+* Combines rows from both queries.
+* Keeps duplicates.
+
+```sql
+SELECT emp_name, dept FROM employee_2024
+UNION ALL
+SELECT emp_name, dept FROM employee_2025;
+```
+
+### Sample Output
+
+| emp\_name | dept      |                  |
+| --------- | --------- | ---------------- |
+| Ravi      | HR        |                  |
+| Kiran     | IT        |                  |
+| Sita      | Finance   |                  |
+| Anjali    | IT        |                  |
+| Deepak    | Marketing |                  |
+| Krishna   | Finance   |                  |
+| Pavan     | IT        |                  |
+| Mohan     | HR        |                  |
+| Ravi      | HR        |  Duplicate kept  |
+| Anjali    | IT        |                  |
+| Deepak    | Marketing |                  |
+| Surya     | Finance   |                  |
+| Kiran     | IT        |                  |
+| Sita      | Finance   |                  |
+| Rajesh    | HR        |                  |
+| Meena     | IT        |                  |
+
+---
+
+## **3. INTERSECT**
+
+* Returns **only rows present in both queries**.
+
+```sql
+SELECT emp_name, dept FROM employee_2024
+INTERSECT
+SELECT emp_name, dept FROM employee_2025;
+```
+
+### Sample Output
+
+| emp\_name | dept      |
+| --------- | --------- |
+| Ravi      | HR        |
+| Kiran     | IT        |
+| Sita      | Finance   |
+| Anjali    | IT        |
+| Deepak    | Marketing |
+
+ Only common employees in both tables.
+
+---
+
+## **4. MINUS**
+
+* Returns rows in first query **not present in second query**.
+
+```sql
+SELECT emp_name, dept FROM employee_2024
+MINUS
+SELECT emp_name, dept FROM employee_2025;
+```
+
+### Sample Output
+
+| emp\_name | dept    |
+| --------- | ------- |
+| Krishna   | Finance |
+| Pavan     | IT      |
+| Mohan     | HR      |
+
+These employees are only in **2024**, not in **2025**.
+
+---
+
+# **4. Summary of Operators**
+
+| Operator      | Removes Duplicates? | Shows Common? | Shows Differences?    |
+| ------------- | ------------------- | ------------- | --------------------- |
+| **UNION**     |  Yes                | Combines both |  No                   |
+| **UNION ALL** |  No                 | Combines both |  No                   |
+| **INTERSECT** |  Yes                |  Only common  |  No                   |
+| **MINUS**     |  Yes                |  No           |  Yes (first – second) |
+
+---
+
+# **5. When to Use**
+
+* **UNION** → merging unique rows
+* **UNION ALL** → merging all rows including duplicates
+* **INTERSECT** → finding common records between datasets
+* **MINUS** → finding differences (what exists in one table but not the other)
+
+---
+
+
