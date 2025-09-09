@@ -1738,5 +1738,193 @@ These employees are only in **2024**, not in **2025**.
 * **MINUS** → finding differences (what exists in one table but not the other)
 
 ---
+Here’s the full content you provided converted into **Markdown format** for your GitHub `README.md` file.
+I’ve preserved everything exactly as is, without deleting or shortening, and also formatted it properly with **headings, code blocks, bullet points, and explanations**.
 
+You can directly copy-paste this into your `README.md` file.
+
+---
+
+# PL/SQL (Procedural Language/SQL) Notes
+
+PL/SQL (Procedural Language/SQL) is Oracle’s extension of SQL that adds procedural features like loops, conditions, and error handling. It allows developers to write powerful programs that combine SQL queries with logic to control how data is processed. With PL/SQL, complex operations, calculations, and error handling can be performed directly within the Oracle database, making data manipulation more efficient and flexible.
+
+---
+
+## What PL/SQL Allows Developers to Do
+
+* Execute SQL queries and DML commands inside procedural blocks.
+* Define variables and perform complex calculations.
+* Create reusable program units, such as procedures, functions, and triggers.
+* Handle exceptions, ensuring the program runs smoothly even when errors occur.
+
+---
+
+## Key Features of PL/SQL
+
+PL/SQL brings the benefits of procedural programming to the relational database world. Some of the most important features of PL/SQL include:
+
+* **Block Structure**: PL/SQL can execute a number of queries in one block using a single command.
+* **Procedural Constructs**: One can create a PL/SQL unit such as procedures, functions, packages, triggers, and types, which are stored in the database for reuse by applications.
+* **Error Handling**: PL/SQL provides a feature to handle exceptions that occur in a PL/SQL block, known as the exception handling block.
+* **Reusable Code**: Create stored procedures, functions, triggers, and packages, which can be executed repeatedly.
+* **Performance**: Reduces network traffic by executing multiple SQL statements within a single block.
+
+---
+
+## Structure of a PL/SQL Block
+
+PL/SQL extends SQL by adding constructs found in procedural languages, resulting in a structural language that is more powerful than SQL. The basic unit in PL/SQL is a **block**. All PL/SQL programs are made up of blocks, which can be nested within each other.
+
+Typically, each block performs a logical action in the program. A block has the following structure:
+
+```sql
+DECLARE
+    declaration statements;
+
+BEGIN
+    executable statements;
+
+EXCEPTION
+    exception handling statements;
+
+END;
+/
+```
+
+### Sections of a PL/SQL Block
+
+* **Declare Section**
+
+  * Starts with `DECLARE` keyword.
+  * Variables, constants, records, and cursors can be declared here to store data temporarily.
+  * Basically consists of the definition of PL/SQL identifiers.
+  * *Optional section*.
+
+* **Execution Section**
+
+  * Starts with `BEGIN` and ends with `END`.
+  * This is a **mandatory section**.
+  * Contains program logic to perform tasks like loops and conditional statements.
+  * Supports all **DML commands, DDL commands, and SQL\*PLUS built-in functions**.
+
+* **Exception Section**
+
+  * Starts with `EXCEPTION` keyword.
+  * *Optional section*.
+  * Contains statements that are executed when a runtime error occurs.
+  * Any exceptions can be handled here.
+
+---
+
+## PL/SQL Identifiers
+
+In PL/SQL, identifiers are names used to represent various program elements like variables, constants, procedures, cursors, triggers, etc. These identifiers allow you to store, manipulate, and access data throughout your PL/SQL code.
+
+---
+
+### 1. Variables in PL/SQL
+
+Like several other programming languages, variables in PL/SQL must be declared prior to use. A variable is like a container that holds data during program execution. Each variable must have:
+
+* A valid name
+* A specific data type
+
+#### Syntax for Declaration of Variables:
+
+```sql
+variable_name datatype [NOT NULL := value];
+```
+
+* `variable_name`: The name of the variable.
+* `datatype`: The data type of the variable (e.g., INTEGER, VARCHAR2).
+* `NOT NULL`: Optional constraint, meaning the variable cannot be left empty.
+* `:= value`: Optional assignment, assigns an initial value to the variable.
+
+---
+
+#### Example: Declaring Variables
+
+```sql
+SQL> SET SERVEROUTPUT ON;
+
+SQL> DECLARE
+    var1 INTEGER;
+    var2 REAL;
+    var3 VARCHAR2(20);
+
+BEGIN
+    NULL;
+END;
+/
+```
+
+**Output:**
+
+```
+PL/SQL procedure successfully completed.
+```
+
+**Explanation:**
+
+* `SET SERVEROUTPUT ON`: Displays the buffer used by `DBMS_OUTPUT`.
+* `var1 INTEGER`: Declares a variable named `var1` of type integer.
+* Many other data types are supported such as `FLOAT`, `INT`, `REAL`, `SMALLINT`, `LONG`, `NUMBER(prec, scale)`, `VARCHAR`, `VARCHAR2`, etc.
+* Slash `/` after `END;`: Executes the block in SQL\*Plus.
+* Assignment operator `:=`: Used to assign a value to a variable.
+
+---
+
+### 2. Displaying Output in PL/SQL
+
+The outputs are displayed using **`DBMS_OUTPUT`**, which is a built-in package that enables the user to display output, debugging information, and send messages from PL/SQL blocks, subprograms, packages, and triggers.
+
+#### Example: Displaying Output
+
+```sql
+SQL> SET SERVEROUTPUT ON;
+SQL> DECLARE
+     var VARCHAR2(40) := 'I love INDIA';
+
+BEGIN
+     DBMS_OUTPUT.PUT_LINE(var);
+
+END;
+/
+```
+
+**Output:**
+
+```
+I love INDIA
+PL/SQL procedure successfully completed.
+```
+
+**Explanation:**
+
+* `DBMS_OUTPUT.PUT_LINE`: Directs the PL/SQL output to the screen.
+
+---
+
+### 3. Comments in PL/SQL
+
+Like in many other programming languages, comments in PL/SQL have no effect on code execution. They can be used to add explanations or notes.
+
+#### Types of Comments:
+
+* **Single-Line Comment**: Use `--`
+* **Multi-Line Comment**: Use `/* */`
+
+#### Example: Adding Comments
+
+```sql
+-- This is a single-line comment
+
+/*
+  This is a multi-line comment
+  that spans over multiple lines.
+*/
+```
+
+---
 
