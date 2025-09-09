@@ -1778,6 +1778,9 @@ PL/SQL extends SQL by adding constructs found in procedural languages, resulting
 
 Typically, each block performs a logical action in the program. A block has the following structure:
 
+<img width="455" height="300" alt="image" src="https://github.com/user-attachments/assets/599c3c46-8978-4d1a-a22c-552a007d9a46" />
+
+
 ```sql
 DECLARE
     declaration statements;
@@ -1928,3 +1931,96 @@ Like in many other programming languages, comments in PL/SQL have no effect on c
 
 ---
 
+# PL/SQL Architecture
+
+---
+<img width="693" height="397" alt="image" src="https://github.com/user-attachments/assets/8ae92bb3-8b31-4ef2-88f0-6f5edff9a94e" />
+
+
+## What do you mean by PL/SQL?
+
+In Oracle, **PL/SQL (Procedural Language/SQL)** is the procedural language extension to the non-procedural SQL. It combines the data manipulation power of SQL and the procedural power of standard programming languages.
+
+* PL/SQL was developed by **Oracle Corporation** within the early '90s to reinforce the capabilities of SQL.
+* It integrates well with **SQL\*PLUS** and other application development products of Oracle.
+* PL/SQL is the **superset of SQL**. It provides SQL data manipulation commands and SQL data types.
+* In PL/SQL, a block without any name is called **Anonymous Block**.
+* A PL/SQL block consists of various **functions, libraries, procedures, triggers, and packages**.
+
+---
+
+### Rules & Best Practices to Remember
+
+* In PL/SQL, the **semicolon (;)** is placed at the end of an SQL statement or PL/SQL control statement.
+* Section keywords **DECLARE**, **BEGIN**, and **EXCEPTION** are **not** followed by semicolons.
+* The **END** keyword and all other PL/SQL statements require a **semicolon (;)** to terminate the statements.
+* Before you start creating code, **define the goals and capabilities** of your PL/SQL software.
+* Select names for constants, variables, and other identifiers that are **both meaningful and descriptive**.
+* To keep track of modifications in your PL/SQL code, use **version control tools** (like Git).
+* Keep the use of **global/universal variables** to a minimum.
+* Observe the **least privilege principle**.
+* Use the **COMMIT** and **ROLLBACK** instructions to provide proper transaction management.
+
+---
+
+## Features of PL/SQL
+
+The various features of PL/SQL are given below:
+
+* Runs on various operating systems such as **Windows, Linux, etc.**
+* Provides an **error-checking facility** and displays user-friendly messages when an error occurs.
+* Offers **logging and debugging capabilities**, including the capacity to use exception messages.
+* SQL can be executed **dynamically**.
+* **Triggers** are specialized forms of stored processes that are automatically invoked when certain data events occur (e.g., `INSERT`, `UPDATE`, or `DELETE`).
+* **Cursors** are used to handle multi-row queries.
+* Supports declaration of **variables and constants** to store data values.
+
+---
+
+## What do you mean by PL/SQL Architecture?
+
+The **PL/SQL runtime system** is a technology (not an independent product).
+It works like an **engine** that executes PL/SQL blocks, subprograms (like functions and procedures).
+
+* This engine can be installed in:
+
+  * An **Oracle Server**
+  * Application development tools such as **Oracle Form Builder** or **Oracle Reports Builder**
+
+---
+
+### PL/SQL Architecture Workflow
+
+* PL/SQL can reside in **two environments**:
+
+  1. **The Oracle Server**
+  2. **The Oracle Tools**
+
+* These two environments are **independent** of each other.
+
+* In either environment, the PL/SQL engine accepts any valid **PL/SQL block** as input.
+
+* The PL/SQL engine executes the **procedural part** of the statements and sends the **SQL statements** to the Oracle Server for execution.
+
+* Only a **single transfer** is required to send the block from the application to the Oracle Server, improving performance (especially in a Client-Server network).
+
+* PL/SQL code can also be **stored in the Oracle server** as subprograms, which can be referenced by any number of applications connected to the database.
+
+---
+
+## Advantages of PL/SQL
+
+* Provides **better performance**.
+* Ensures **high productivity**.
+* Supports **Object-Oriented Programming concepts**.
+* Offers **scalability and manageability**.
+* Supports various **web application development tools**.
+
+---
+
+## Disadvantages of PL/SQL
+
+* Requires **high memory**.
+* Lacks **functionality debugging** in stored procedures.
+
+---
