@@ -2024,3 +2024,316 @@ It works like an **engine** that executes PL/SQL blocks, subprograms (like funct
 * Lacks **functionality debugging** in stored procedures.
 
 ---
+
+#  PL/SQL Scalar Data Types 
+
+In **PL/SQL**, scalar data types are the fundamental building blocks for handling single values. Unlike composite types (arrays, records, etc.), scalar types hold **one value at a time**.
+
+Scalar data types include:
+
+*  **Numeric Types**
+*  **Character Types**
+*  **Boolean Types**
+*  **Datetime & Interval Types**
+*  **Large Object (LOB) Types**
+
+---
+
+##  Numeric Data Types
+
+Used to store numbers (integers, decimals, floating point).
+
+### 1. **NUMBER**
+
+* Can be used as **fixed point** or **floating point**.
+* Syntax:
+
+  ```sql
+  NUMBER(p, s)
+  ```
+
+  * `p` → Precision (total digits).
+  * `s` → Scale (digits after decimal).
+
+Example:
+
+```sql
+v_num NUMBER(5,2) := 123.45; -- allows 5 digits, 2 after decimal
+```
+
+---
+
+### 2. **BINARY\_INTEGER / PLS\_INTEGER**
+
+* Store signed integers.
+* `PLS_INTEGER` is faster (machine-dependent, efficient for loops).
+
+ Example:
+
+```sql
+v_int BINARY_INTEGER := 100;
+v_plsint PLS_INTEGER := -50;
+```
+
+---
+
+### 3. **FLOAT**
+
+* Stores floating-point values with precision up to **10 digits**.
+
+ Example:
+
+```sql
+v_float FLOAT(10) := 12345.6789;
+```
+
+---
+
+###  Subtypes of NUMBER
+
+PL/SQL provides **constraint subtypes** of `BINARY_INTEGER` for safer coding:
+
+| Subtype       | Description                             | Example                   |
+| ------------- | --------------------------------------- | ------------------------- |
+| **NATURAL**   | Non-negative integers (0,1,2,3,…)       | `v_nat NATURAL := 0;`     |
+| **NATURALN**  | Like NATURAL, but **cannot be NULL**    | `v_natn NATURALN := 10;`  |
+| **POSITIVE**  | Only positive (>0) integers             | `v_pos POSITIVE := 20;`   |
+| **POSITIVEN** | Positive (>0) integers and **not NULL** | `v_posn POSITIVEN := 30;` |
+
+ Useful when you want to restrict values to safe ranges.
+
+---
+
+##  Character Data Types
+
+Used to store text strings.
+
+### 1. **CHAR**
+
+* Fixed-length character string.
+* Pads with spaces if shorter.
+   Example:
+
+```sql
+v_char CHAR(10) := 'HELLO'; -- stored as 'HELLO     '
+```
+
+---
+
+### 2. **VARCHAR2**
+
+* Variable-length string.
+* Preferred over `CHAR`.
+   Example:
+
+```sql
+v_varchar VARCHAR2(20) := 'Oracle PL/SQL';
+```
+
+---
+
+### 3. **LONG**
+
+* Stores variable-length strings **up to 2GB**.
+* Rarely used (deprecated, replaced by `CLOB`).
+   Example:
+
+```sql
+v_long LONG := 'This is a long string...';
+```
+
+---
+
+###  Subtypes of Character
+
+| Subtype          | Description                                |
+| ---------------- | ------------------------------------------ |
+| **STRING**       | Subtype of `VARCHAR2` for variable strings |
+| **LONG VARCHAR** | Used for large variable strings            |
+
+ Example:
+
+```sql
+v_string STRING(50) := 'Variable length string';
+v_longvar VARCHAR2(2000) := 'Large string storage demo';
+```
+
+---
+
+##  Boolean Data Type
+
+* Stores logical values: `TRUE`, `FALSE`, or `NULL`.
+* Cannot be selected from a database column directly.
+
+ Example:
+
+```sql
+v_bool BOOLEAN := TRUE;
+
+IF v_bool THEN
+   DBMS_OUTPUT.PUT_LINE('BOOLEAN: TRUE');
+END IF;
+```
+
+---
+
+##  Date & Time Data Types
+
+Used to handle dates, times, and intervals.
+
+### 1. **DATE**
+
+* Stores date + time (year, month, day, hour, min, sec).
+   Example:
+
+```sql
+v_date DATE := SYSDATE;
+```
+
+---
+
+### 2. **TIMESTAMP**
+
+* More precise than `DATE` (includes fractional seconds).
+   Example:
+
+```sql
+v_ts TIMESTAMP := SYSTIMESTAMP;
+```
+
+---
+
+### 3. **TIMESTAMP WITH TIME ZONE**
+
+* Stores date + time + time zone info.
+   Example:
+
+```sql
+v_tstz TIMESTAMP WITH TIME ZONE := SYSTIMESTAMP;
+```
+
+---
+
+### 4. **TIMESTAMP WITH LOCAL TIME ZONE**
+
+* Normalizes time zone according to **DB session’s time zone**.
+
+---
+
+### 5. **INTERVAL YEAR TO MONTH**
+
+* Represents differences in **years and months**.
+   Example:
+
+```sql
+v_intv_ym INTERVAL YEAR TO MONTH := INTERVAL '2' YEAR;
+```
+
+---
+
+### 6. **INTERVAL DAY TO SECOND**
+
+* Represents differences in **days, hours, minutes, seconds**.
+   Example:
+
+```sql
+v_intv_ds INTERVAL DAY TO SECOND := INTERVAL '5 12:30:45' DAY TO SECOND;
+```
+
+---
+
+## Large Object (LOB) Data Types
+
+Used for handling **large unstructured data** like images, videos, documents.
+
+| LOB Type  | Description                                    |
+| --------- | ---------------------------------------------- |
+| **BLOB**  | Binary Large Object (images, multimedia, etc.) |
+| **CLOB**  | Character Large Object (large text up to 4GB)  |
+| **NCLOB** | National character large object (Unicode text) |
+| **BFILE** | Pointer to a binary file stored outside DB     |
+
+Note: LOB values cannot be directly printed using `DBMS_OUTPUT`.
+
+---
+
+## Full Example Program (Demo)
+
+```sql
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- Numeric Types
+    v_num1      NUMBER(5,2) := 123.45;
+    v_int       BINARY_INTEGER := 100;
+    v_plsint    PLS_INTEGER := -50;
+    v_float     FLOAT(10) := 12345.6789;
+
+    v_nat       NATURAL := 0;
+    v_natn      NATURALN := 10;
+    v_pos       POSITIVE := 20;
+    v_posn      POSITIVEN := 30;
+
+    -- Character Types
+    v_char      CHAR(10) := 'HELLO';
+    v_varchar   VARCHAR2(20) := 'Oracle PL/SQL';
+    v_long      LONG := 'This is a long string...';
+    v_string    STRING(50) := 'Variable length string';
+    v_longvar   VARCHAR2(2000) := 'Large string storage demo';
+
+    -- Boolean
+    v_bool      BOOLEAN := TRUE;
+
+    -- Date & Time
+    v_date      DATE := SYSDATE;
+    v_ts        TIMESTAMP := SYSTIMESTAMP;
+    v_tstz      TIMESTAMP WITH TIME ZONE := SYSTIMESTAMP;
+    v_tslz      TIMESTAMP WITH LOCAL TIME ZONE := SYSTIMESTAMP;
+    v_intv_ym   INTERVAL YEAR TO MONTH := INTERVAL '2' YEAR;
+    v_intv_ds   INTERVAL DAY TO SECOND := INTERVAL '5 12:30:45' DAY TO SECOND;
+
+    -- LOBs
+    v_blob      BLOB;
+    v_clob      CLOB;
+    v_nclob     NCLOB;
+    v_bfile     BFILE;
+BEGIN
+    -- Numeric
+    DBMS_OUTPUT.PUT_LINE('NUMBER: ' || v_num1);
+    DBMS_OUTPUT.PUT_LINE('BINARY_INTEGER: ' || v_int);
+    DBMS_OUTPUT.PUT_LINE('PLS_INTEGER: ' || v_plsint);
+    DBMS_OUTPUT.PUT_LINE('FLOAT: ' || v_float);
+
+    DBMS_OUTPUT.PUT_LINE('NATURAL: ' || v_nat);
+    DBMS_OUTPUT.PUT_LINE('NATURALN: ' || v_natn);
+    DBMS_OUTPUT.PUT_LINE('POSITIVE: ' || v_pos);
+    DBMS_OUTPUT.PUT_LINE('POSITIVEN: ' || v_posn);
+
+    -- Character
+    DBMS_OUTPUT.PUT_LINE('CHAR: ' || v_char);
+    DBMS_OUTPUT.PUT_LINE('VARCHAR2: ' || v_varchar);
+    DBMS_OUTPUT.PUT_LINE('LONG: ' || v_long);
+    DBMS_OUTPUT.PUT_LINE('STRING: ' || v_string);
+    DBMS_OUTPUT.PUT_LINE('LONG VARCHAR: ' || v_longvar);
+
+    -- Boolean
+    IF v_bool THEN
+        DBMS_OUTPUT.PUT_LINE('BOOLEAN: TRUE');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('BOOLEAN: FALSE or NULL');
+    END IF;
+
+    -- Date & Time
+    DBMS_OUTPUT.PUT_LINE('DATE: ' || TO_CHAR(v_date, 'DD-MON-YYYY HH24:MI:SS'));
+    DBMS_OUTPUT.PUT_LINE('TIMESTAMP: ' || v_ts);
+    DBMS_OUTPUT.PUT_LINE('TIMESTAMP WITH TZ: ' || v_tstz);
+    DBMS_OUTPUT.PUT_LINE('TIMESTAMP WITH LOCAL TZ: ' || v_tslz);
+    DBMS_OUTPUT.PUT_LINE('INTERVAL YEAR TO MONTH: ' || v_intv_ym);
+    DBMS_OUTPUT.PUT_LINE('INTERVAL DAY TO SECOND: ' || v_intv_ds);
+
+    DBMS_OUTPUT.PUT_LINE('LOB Types Declared: BLOB, CLOB, NCLOB, BFILE');
+END;
+/
+```
+
+---
