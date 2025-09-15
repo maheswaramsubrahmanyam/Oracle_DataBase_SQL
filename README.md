@@ -32,6 +32,12 @@ INSERT INTO SPORTS_DATA VALUES (103, 'anjali', 'cricket', 55);
 
 ### Adding a New Column
 
+```java
+public static void main(String[] args)
+{
+   System.out.println("hello");
+}
+```
 ```sql
 ALTER TABLE SPORTS_DATA ADD HEIGHT NUMBER(2);
 ```
