@@ -2344,9 +2344,6 @@ END;
 
 ---
 
-
-
-````markdown
 # PL/SQL Conditional Statements
 
 **PL/SQL (Procedural Language/Structured Query Language)** is Oracle's extension to SQL that allows for procedural programming within databases.  
