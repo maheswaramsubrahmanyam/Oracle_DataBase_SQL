@@ -2374,7 +2374,7 @@ The `IF THEN` statement is the simplest decision-making statement.
 It executes a block of code only when a condition is **true**.
 
 ###  Syntax
-```plsql
+```sql
 IF condition THEN
    -- do something
 END IF;
@@ -2382,7 +2382,7 @@ END IF;
 
 ###  Example
 
-```plsql
+```sql
 DECLARE
    num1 NUMBER := 10;
    num2 NUMBER := 20;
@@ -2409,7 +2409,7 @@ The `IF THEN ELSE` statement allows us to execute one block when the condition i
 
 ###  Syntax
 
-```plsql
+```sql
 IF condition THEN
    -- Executes if condition is true
 ELSE
@@ -2419,7 +2419,7 @@ END IF;
 
 ###  Example
 
-```plsql
+```sql
 DECLARE
    num1 NUMBER := 10;
    num2 NUMBER := 20;
@@ -2450,7 +2450,7 @@ It is useful when we need to test multiple conditions in a hierarchical way.
 
 ###  Syntax
 
-```plsql
+```sql
 IF condition1 THEN
    -- Executes when condition1 is true
    IF condition2 THEN
@@ -2461,7 +2461,7 @@ END IF;
 
 ###  Example
 
-```plsql
+```sql
 DECLARE
    num1 NUMBER := 10;
    num2 NUMBER := 20;
@@ -2499,7 +2499,7 @@ The statements are checked **from top to bottom**.
 
 ###  Syntax
 
-```plsql
+```sql
 IF condition1 THEN
    -- statement
 ELSIF condition2 THEN
@@ -2513,7 +2513,7 @@ END IF;
 
 ###  Example
 
-```plsql
+```sql
 DECLARE
    num1 NUMBER := 10;
    num2 NUMBER := 20;
