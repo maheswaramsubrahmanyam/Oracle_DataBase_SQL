@@ -2343,3 +2343,214 @@ END;
 ```
 
 ---
+
+
+
+````markdown
+# PL/SQL Conditional Statements
+
+**PL/SQL (Procedural Language/Structured Query Language)** is Oracle's extension to SQL that allows for procedural programming within databases.  
+It features various conditional statements to control the flow of execution based on specific conditions.
+
+In this document, we will learn about the various **PL/SQL Conditional Statements** in detail with the help of examples.
+
+---
+
+##  What are PL/SQL Conditional Statements?
+
+PL/SQL is an extension of SQL used in Oracle databases to write procedural code. It includes various conditional statements that allow developers to execute different blocks of code based on specific conditions.  
+
+Decision-making statements in programming languages decide the **direction of the flow of program execution**.  
+
+Conditional Statements available in PL/SQL are:
+
+- `IF THEN`
+- `IF THEN ELSE`
+- `NESTED IF-THEN`
+- `IF THEN ELSIF-THEN-ELSE` (Ladder)
+
+---
+
+## 1. IF THEN
+
+The `IF THEN` statement is the simplest decision-making statement.  
+It executes a block of code only when a condition is **true**.
+
+###  Syntax
+```plsql
+IF condition THEN
+   -- do something
+END IF;
+````
+
+###  Example
+
+```plsql
+DECLARE
+   num1 NUMBER := 10;
+   num2 NUMBER := 20;
+BEGIN
+   IF num1 > num2 THEN
+      DBMS_OUTPUT.PUT_LINE('num1 is greater');
+   END IF;
+
+   DBMS_OUTPUT.PUT_LINE('This line is always executed');
+END;
+```
+
+###  Output
+
+```
+This line is always executed
+```
+
+---
+
+## 2. IF THEN ELSE
+
+The `IF THEN ELSE` statement allows us to execute one block when the condition is **true**, and another block when the condition is **false**.
+
+###  Syntax
+
+```plsql
+IF condition THEN
+   -- Executes if condition is true
+ELSE
+   -- Executes if condition is false
+END IF;
+```
+
+###  Example
+
+```plsql
+DECLARE
+   num1 NUMBER := 10;
+   num2 NUMBER := 20;
+BEGIN
+   IF num1 < num2 THEN
+      DBMS_OUTPUT.PUT_LINE('I am in IF block');
+   ELSE
+      DBMS_OUTPUT.PUT_LINE('I am in ELSE block');
+   END IF;
+
+   DBMS_OUTPUT.PUT_LINE('Outside IF-ELSE block');
+END;
+```
+
+###  Output
+
+```
+I am in IF block
+Outside IF-ELSE block
+```
+
+---
+
+## 3. NESTED IF THEN
+
+A **nested IF statement** means an `IF` inside another `IF`.
+It is useful when we need to test multiple conditions in a hierarchical way.
+
+###  Syntax
+
+```plsql
+IF condition1 THEN
+   -- Executes when condition1 is true
+   IF condition2 THEN
+      -- Executes when condition2 is true
+   END IF;
+END IF;
+```
+
+###  Example
+
+```plsql
+DECLARE
+   num1 NUMBER := 10;
+   num2 NUMBER := 20;
+   num3 NUMBER := 20;
+BEGIN
+   IF num1 < num2 THEN
+      DBMS_OUTPUT.PUT_LINE('num1 is smaller than num2');
+
+      IF num1 < num3 THEN
+         DBMS_OUTPUT.PUT_LINE('num1 is also smaller than num3');
+      END IF;
+   END IF;
+
+   DBMS_OUTPUT.PUT_LINE('After END IF');
+END;
+```
+
+###  Output
+
+```
+num1 is smaller than num2
+num1 is also smaller than num3
+After END IF
+```
+
+---
+
+## 4. IF THEN ELSIF-THEN-ELSE Ladder
+
+When multiple conditions need to be checked, we use the **IF-ELSIF-ELSE Ladder**.
+The statements are checked **from top to bottom**.
+
+* The first condition that evaluates to `TRUE` gets executed.
+* If none match, the `ELSE` block executes.
+
+###  Syntax
+
+```plsql
+IF condition1 THEN
+   -- statement
+ELSIF condition2 THEN
+   -- statement
+ELSIF condition3 THEN
+   -- statement
+ELSE
+   -- statement
+END IF;
+```
+
+###  Example
+
+```plsql
+DECLARE
+   num1 NUMBER := 10;
+   num2 NUMBER := 20;
+BEGIN
+   IF num1 < num2 THEN
+      DBMS_OUTPUT.PUT_LINE('num1 is smaller');
+   ELSIF num1 = num2 THEN
+      DBMS_OUTPUT.PUT_LINE('Both are equal');
+   ELSE
+      DBMS_OUTPUT.PUT_LINE('num2 is greater');
+   END IF;
+
+   DBMS_OUTPUT.PUT_LINE('After END IF');
+END;
+```
+
+### Output
+
+```
+num1 is smaller
+After END IF
+```
+
+---
+
+##  Conclusion
+
+* **IF THEN** → Executes a block when condition is true.
+* **IF THEN ELSE** → Executes one block if true, another if false.
+* **Nested IF** → Places one IF inside another for complex logic.
+* **IF-ELSIF-ELSE Ladder** → Handles multiple conditions in a structured way.
+
+These conditional statements are **essential for effective procedural programming in Oracle PL/SQL**.
+
+---
+
+
