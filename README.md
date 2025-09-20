@@ -2563,6 +2563,7 @@ It is a **block-structured language** that combines SQL with the procedural feat
 In this article, we will learn about how to use the **Loop statement** of PL/SQL with all its features like **EXIT**, **EXIT WHEN**, and **Nested Loop** with examples.
 
 ---
+<img width="470" height="470" alt="image" src="https://github.com/user-attachments/assets/73f63713-d57e-4c38-a9b4-b55a9caa7b15" />
 
 ## LOOP Statement in PL/SQL
 
