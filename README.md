@@ -2551,3 +2551,171 @@ These conditional statements are **essential for effective procedural programmin
 ---
 
 
+
+
+# PL/SQL Loop Statement
+
+**PL/SQL (Procedural Language/Structured Query Language)** stands for *Procedural Language Extension to SQL*.  
+It is designed specifically for **Oracle databases** and extends SQL capabilities by allowing the creation of stored procedures, functions, and triggers.  
+
+It is a **block-structured language** that combines SQL with the procedural features of programming languages.
+
+In this article, we will learn about how to use the **Loop statement** of PL/SQL with all its features like **EXIT**, **EXIT WHEN**, and **Nested Loop** with examples.
+
+---
+
+## LOOP Statement in PL/SQL
+
+One of the key features in PL/SQL for controlling program flow is the **LOOP statement**.  
+It allows you to **repeatedly execute a block of code** until a specified condition is satisfied.
+
+### Syntax
+```sql
+LOOP
+   -- Code block to be executed repeatedly
+END LOOP;
+````
+
+---
+
+##  EXIT Statement
+
+The **EXIT** statement is used to **break the loop immediately**, whether the loop condition has been satisfied or not.
+This is useful when you want to terminate the loop based on a condition inside the block.
+
+### Syntax
+
+```sql
+LOOP
+   -- Code block
+   IF condition THEN
+      EXIT;
+   END IF;
+END LOOP;
+```
+
+### Example: PL/SQL LOOP with Conditional EXIT
+
+```sql
+DECLARE
+  counter NUMBER := 1;
+BEGIN
+  LOOP
+    DBMS_OUTPUT.PUT_LINE('This is iteration number ' || counter);
+
+    IF counter = 3 THEN
+      EXIT;
+    END IF;
+
+    counter := counter + 1;
+  END LOOP;
+END;
+/
+```
+
+###  Output
+
+```
+Statement processed.
+This is iteration number 1
+This is iteration number 2
+This is iteration number 3
+```
+
+### Explanation
+
+1. Counter variable is initialized to 1.
+2. The `LOOP` executes repeatedly.
+3. Inside the loop, iteration number is printed.
+4. Counter increments by 1 each time.
+5. When counter = 3, the `EXIT` statement executes and stops the loop.
+
+---
+
+## EXIT WHEN Statement
+
+The **EXIT WHEN** statement provides a **concise way** to exit a loop when a condition is met.
+It directly checks the condition during loop execution.
+
+###  Syntax
+
+```sql
+LOOP
+    -- Code block
+    EXIT WHEN condition;
+END LOOP;
+```
+
+### Example: PL/SQL LOOP with EXIT WHEN
+
+```sql
+DECLARE
+   counter NUMBER := 1;  -- Initialization of the counter variable
+BEGIN
+   -- Loop that prints "Maheswaram" five times
+   LOOP
+      DBMS_OUTPUT.PUT_LINE('Maheswaram');
+
+      counter := counter + 1;  -- Increment the counter
+
+      EXIT WHEN counter > 5;  -- Exit the loop when counter exceeds 5
+   END LOOP;
+END;
+/
+```
+
+### Output
+
+```
+Statement processed.
+Maheswaram
+Maheswaram
+Maheswaram
+Maheswaram
+Maheswaram
+```
+
+### Explanation
+
+1. Counter starts at 1.
+2. Loop executes repeatedly.
+3. Prints `"Maheswaram"` each iteration.
+4. Counter increments by 1 every time.
+5. Loop exits automatically when counter > 5.
+
+---
+
+## Nested Loops
+
+A **Nested Loop** is a loop inside another loop.
+PL/SQL supports multiple levels of nesting, where each loop has its own control and exit conditions.
+
+### Syntax
+
+```sql
+-- Outer Loop
+LOOP
+     -- Outer loop code block
+
+     -- Inner Loop
+     LOOP
+         -- Inner loop code block
+         EXIT WHEN inner_condition;
+     END LOOP;
+
+   EXIT WHEN outer_condition;
+END LOOP;
+```
+
+---
+
+## Conclusion
+
+* **LOOP** executes code repeatedly until explicitly exited.
+* **EXIT** breaks the loop immediately when condition is met.
+* **EXIT WHEN** provides a cleaner way to exit a loop with a condition.
+* **Nested Loops** allow multiple levels of iteration.
+
+PL/SQL loops provide **flexibility and control** for repetitive tasks in Oracle database programming.
+
+--- 
