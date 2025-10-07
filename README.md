@@ -2954,3 +2954,129 @@ END;
 * **IN OUT** → input + output (value is modified and returned).
 
 ---
+
+
+#  **MODULE 5 – PACKAGES, CURSORS, AND DATABASE TRIGGERS**
+
+---
+
+##  **1. PACKAGES**
+
+###  Definition
+
+A **package** in PL/SQL is a **named collection of logically related procedures, functions, variables, cursors, and exceptions**, grouped together for better organization.
+
+It has **two parts:**
+
+1. **Package Specification (Spec)** – declares public items (interface).
+2. **Package Body** – defines code for procedures/functions declared in the spec.
+
+###  Why use Packages
+
+* Encapsulation → Hides implementation details.
+* Reusability → Stored once, used many times.
+* Better performance → Loaded into memory once.
+* Modularity → Keeps related objects together.
+
+###  Syntax
+
+```sql
+-- Package Specification
+CREATE OR REPLACE PACKAGE pkg_name IS
+   PROCEDURE proc1(p_id NUMBER);
+   FUNCTION func1(p_val NUMBER) RETURN NUMBER;
+END pkg_name;
+/
+
+-- Package Body
+CREATE OR REPLACE PACKAGE BODY pkg_name IS
+   PROCEDURE proc1(p_id NUMBER) IS
+   BEGIN
+      DBMS_OUTPUT.PUT_LINE('Procedure Executed: ' || p_id);
+   END;
+
+   FUNCTION func1(p_val NUMBER) RETURN NUMBER IS
+   BEGIN
+      RETURN p_val * p_val;
+   END;
+END pkg_name;
+/
+```
+
+###  Usage
+
+```sql
+BEGIN
+   pkg_name.proc1(10);
+   DBMS_OUTPUT.PUT_LINE('Square: ' || pkg_name.func1(5));
+END;
+/
+```
+
+```sql
+-- package specification 
+CREATE PACKAGE ANURADHA IS 
+PROCEDURE P1(P_ID NUMBER );
+FUNCTION F1(F_NUM NUMBER ) RETURN NUMBER;
+END;
+/
+-- package body 
+
+CREATE PACKAGE BODY ANURADHA IS 
+
+PROCEDURE P1(P_ID NUMBER ) IS 
+    BEGIN 
+    DBMS_OUTPUT.PUT_LINE('PROCEDURE EXCUITED : ' || P_ID);
+    END;
+    
+    FUNCTION F1(F_NUM NUMBER ) RETURN NUMBER IS 
+      BEGIN 
+      RETURN F_NUM * F_NUM;
+     END;
+END ANURADHA;
+/
+
+```
+
+
+```sql
+
+BEGIN 
+-- PACKAGE_NAME.PRIOCIDURE_NAME(PARAMS);
+-- PACKAGE_NAME.FUNCTION_NAME(PARAMS);
+
+ANURADHA.P1(10);
+DBMS_OUTPUT.PUT_LINE('SQUARE OF NUMBER : ' || ANURADHA.F1(5));
+END;
+/
+```
+### output 
+
+PROCEDURE EXCUITED : 10
+SQUARE OF NUMBER : 25
+
+PL/SQL procedure successfully completed.
+
+```sql
+BEGIN 
+-- PACKAGE_NAME.PRIOCIDURE_NAME(PARAMS);
+-- PACKAGE_NAME.FUNCTION_NAME(PARAMS);
+
+ANURADHA.P1(100);
+DBMS_OUTPUT.PUT_LINE('SQUARE OF NUMBER : ' || ANURADHA.F1(55));
+END;
+/
+```
+### output 
+
+PROCEDURE EXCUITED : 100
+SQUARE OF NUMBER : 3025
+
+
+PL/SQL procedure successfully completed.
+
+
+ **Key Note:**
+If only the specification exists, the package can still compile (as long as no body code is needed).
+
+---
