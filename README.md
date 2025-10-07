@@ -2749,5 +2749,208 @@ PL/SQL loops provide **flexibility and control** for repetitive tasks in Oracle 
 
 --- 
 
+1. Introduction – Stored Procedure
+2. IN parameter
+3. OUT parameter
+4. IN OUT parameter
+5. Stored Functions
+
+---
 
 
+
+## 1. **Introduction – Stored Procedure**
+
+###  Definition
+
+* A **Stored Procedure** is a **named PL/SQL block** that is stored in the Oracle database and can be executed (called) whenever needed.
+* Unlike an anonymous block, it is compiled and saved in the database for **repeated use**.
+
+###  Why use Stored Procedures?
+
+* Code reusability (write once, use many times).
+* Better performance (precompiled and stored in DB).
+* Improves security (users can be given EXECUTE privilege only).
+* Modularity (break big programs into smaller subprograms).
+
+###  Where to use?
+
+* When you need **business logic** at the database level.
+* Repeated tasks (like salary calculation, inserting logs, sending reports).
+
+###  General Syntax
+
+```sql
+CREATE [OR REPLACE] PROCEDURE procedure_name 
+   (parameter_list) 
+IS | AS
+   -- Declarations (if any)
+BEGIN
+   -- PL/SQL statements
+END procedure_name;
+```
+
+---
+
+## 2. **IN Parameter**
+
+###  Definition
+
+* An **IN parameter** is the default mode.
+* It passes a value **from the caller (program) into the procedure**.
+* Inside the procedure, the IN parameter is **read-only** (cannot be modified).
+
+###  Syntax
+
+```sql
+CREATE OR REPLACE PROCEDURE proc_in (p_name IN VARCHAR2) 
+IS
+BEGIN
+   DBMS_OUTPUT.PUT_LINE('Hello, ' || p_name);
+END;
+```
+
+###  Example Execution
+
+```sql
+EXEC proc_in('Subrahmanyam');
+```
+
+ **Note:** `p_name` can only be **read**, not assigned new value.
+
+---
+
+## 3. **OUT Parameter**
+
+###  Definition
+
+* An **OUT parameter** is used to **return a value back to the caller**.
+* The caller must provide a variable to store the output.
+* Inside the procedure, you **assign** a value to OUT parameter.
+
+###  Syntax
+
+```sql
+CREATE OR REPLACE PROCEDURE proc_out (p_num IN NUMBER, p_square OUT NUMBER)
+IS
+BEGIN
+   p_square := p_num * p_num;
+END;
+```
+
+###  Example Execution
+
+```sql
+DECLARE
+   result NUMBER;
+BEGIN
+   proc_out(5, result);
+   DBMS_OUTPUT.PUT_LINE('Square = ' || result);
+END;
+```
+ **Note:** OUT parameters **cannot return a value directly** like a function; they need variables.
+
+---
+
+## 4. **IN OUT Parameter**
+
+###  Definition
+
+* An **IN OUT parameter** works as **both input and output**.
+* Caller passes a value → procedure modifies it → updated value is returned.
+
+### Syntax
+
+```sql
+CREATE OR REPLACE PROCEDURE proc_inout (p_num IN OUT NUMBER) 
+IS
+BEGIN
+   p_num := p_num * 2;  -- modifies value
+END;
+```
+
+###  Example Execution
+
+```sql
+DECLARE
+   n NUMBER := 10;
+BEGIN
+   proc_inout(n);
+   DBMS_OUTPUT.PUT_LINE('After procedure call: ' || n);
+END;
+```
+
+**Output:**
+
+```
+After procedure call: 20
+```
+
+**Note:** Useful when you want to both **send** and **receive** data with a single parameter.
+
+---
+
+## 5. **Stored Functions**
+
+###  Definition
+
+* A **Stored Function** is like a procedure, but it **must return a single value** using the `RETURN` keyword.
+* Can be used inside SQL queries (unlike procedures).
+
+###  Why use Functions?
+
+* When you need **calculation** and want to return a single result (salary, tax, discount, etc.).
+
+###  Syntax
+
+```sql
+CREATE [OR REPLACE] FUNCTION function_name 
+   (parameter_list) 
+RETURN datatype 
+IS | AS
+   -- Declarations (if any)
+BEGIN
+   -- Logic
+   RETURN value;
+END function_name;
+```
+
+###  Example Function
+
+```sql
+CREATE OR REPLACE FUNCTION get_square (p_num IN NUMBER) 
+RETURN NUMBER
+IS
+BEGIN
+   RETURN p_num * p_num;
+END;
+```
+
+### Example Execution
+
+```sql
+-- Method 1: SQL query
+SELECT get_square(6) FROM dual;
+
+-- Method 2: In PL/SQL block
+DECLARE
+   res NUMBER;
+BEGIN
+   res := get_square(6);
+   DBMS_OUTPUT.PUT_LINE('Square = ' || res);
+END;
+```
+
+**Note:** Functions are more powerful inside **queries, WHERE clauses, and SELECT lists**, while procedures cannot.
+
+---
+
+# Quick Notes / Summary
+
+* **Procedure** = performs an action (may or may not return values, can have IN/OUT/IN OUT params).
+* **Function** = always returns a **single value** using `RETURN`.
+* **IN** → input only (read-only).
+* **OUT** → output only (assign inside procedure).
+* **IN OUT** → input + output (value is modified and returned).
+
+---
